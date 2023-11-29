@@ -1,0 +1,8 @@
+version: '3'
+services:
+  app:
+    image: your-dockerhub-username/Allspice:latest
+    env_file:
+      - Allspice-env
+    ports:
+      - "7045:80"
