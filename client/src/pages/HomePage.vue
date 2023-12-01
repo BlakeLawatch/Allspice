@@ -11,10 +11,13 @@
       </div>
     </section>
 
-    <section class="row">
-      <div class="col-4 " v-for="recipe in recipes" :key="recipe.id">
+    <section class="row d-flex justify-content-around">
+
+      <div class="col-3 shadow m-2" v-for="recipe in recipes" :key="recipe.id">
         <RecipeComponent :recipe="recipe" />
       </div>
+
+
     </section>
   </div>
 </template>
@@ -28,6 +31,7 @@ import { recipesService } from '../services/RecipesService.js'
 
 export default {
   setup() {
+
     onMounted(() => {
       getRecipes();
     });
@@ -40,7 +44,9 @@ export default {
       }
     }
     return {
-      recipes: computed(() => AppState.recipes)
+      recipes: computed(() => AppState.recipes),
+
+
     };
   },
 }
@@ -53,5 +59,9 @@ export default {
   object-fit: contain;
   object-position: center;
 
+}
+
+.shadow {
+  box-shadow: 2px 2px 10px gray;
 }
 </style>

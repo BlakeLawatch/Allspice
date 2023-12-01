@@ -1,11 +1,12 @@
 <template>
-    <div class="col-12 p-2">
-        <img class="img-fluid shadow" :src="recipe.img" alt="" :title="recipe.title">
+    <div @click="setActiveRecipe()" class="col-12 p-2" data-bs-toggle="modal" data-bs-target="#recipeModal">
+        <img class="img-fluid" :src="recipe.img" alt="" :title="recipe.title">
         <div>
             <p>{{ recipe.title }}</p>
             <p>{{ recipe.category }}</p>
         </div>
     </div>
+    <RecipeModal />
 </template>
 
 
@@ -14,21 +15,27 @@
 import { computed } from 'vue';
 import { Recipe } from '../models/Recipe';
 import { AppState } from '../AppState';
+import RecipeModal from './RecipeModal.vue';
+import { recipesService } from '../services/RecipesService';
 
 
 export default {
     props: { recipe: { type: Recipe, required: true } },
-    setup() {
+    setup(props) {
         return {
-            recipes: computed(() => AppState.recipes)
-        }
-    }
+            recipes: computed(() => AppState.recipes),
+            activeRecipe: computed(() => AppState.activeRecipe),
+
+
+            setActiveRecipe() {
+                recipesService.setActiveRecipe(props.recipe)
+            }
+
+        };
+    },
+    components: { RecipeModal }
 };
 </script>
 
 
-<style lang="scss" scoped>
-.shadow {
-    box-shadow: 2px 2px 10px gray;
-}
-</style>
+<style lang="scss" scoped></style>
