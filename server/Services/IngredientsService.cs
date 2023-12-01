@@ -19,6 +19,27 @@ public class IngredientsService
         return ingredient;
     }
 
+    internal Ingredient GetIngredientById(int ingredientId)
+    {
+        Ingredient ingredient = _repository.GetIngredientsById(ingredientId);
+        if (ingredient == null)
+        {
+            throw new Exception($"invalid Id:{ingredientId}");
+        }
+        return ingredient;
+    }
+
+    internal Ingredient DestroyIngredient(int ingredientId, string userId)
+    {
+        Ingredient ingredient = GetIngredientById(ingredientId);
+        if (ingredient.CreatorId != userId)
+        {
+            throw new Exception("Not your ingredient to delete");
+        }
+        _repository.DestroyIngredient(ingredientId);
+        return ingredient;
+    }
+
     internal List<Ingredient> GetIngredientsByRecipeId(int recipeId)
     {
         List<Ingredient> ingredients = _repository.GetIngredientsByRecipeId(recipeId);

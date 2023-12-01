@@ -1,3 +1,5 @@
+
+
 namespace Allspice.Repositories;
 
 public class IngredientsRepository
@@ -28,6 +30,33 @@ public class IngredientsRepository
             ingredient.Creator = account;
             return ingredient;
         }, ingredientData).FirstOrDefault();
+        return ingredient;
+    }
+
+    internal void DestroyIngredient(int ingredientId)
+    {
+        string sql = "DELETE FROM ingredients WHERE id = @ingredientId LIMIT 1;";
+
+        _db.Execute(sql, new { ingredientId });
+    }
+
+    internal Ingredient GetIngredientsById(int ingredientId)
+    {
+        string sql = @"
+        SELECT
+        ing.*,
+        acc.*
+        FROM ingredients ing
+        JOIN accounts acc ON acc.id = ing.creatorId
+        WHERE ing.id = @ingredientId
+        ;";
+
+        Ingredient ingredient = _db.Query<Ingredient, Account, Ingredient>
+        (sql, (ingredient, account) =>
+        {
+            ingredient.Creator = account;
+            return ingredient;
+        }, new { ingredientId }).FirstOrDefault();
         return ingredient;
     }
 

@@ -40,7 +40,7 @@ public class IngredientsController : ControllerBase
         {
             Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
             string userId = userInfo.Id;
-            Ingredient ingredient = _ingredientsService.DestroyIngredient(ingredientId);
+            Ingredient ingredient = _ingredientsService.DestroyIngredient(ingredientId, userId);
             return Ok(ingredient);
         }
         catch (Exception e)
