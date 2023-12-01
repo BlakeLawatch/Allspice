@@ -2,13 +2,25 @@
     <div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div>
-                    <img src="" alt="">
-                </div>
+                <section v-if="activeRecipe" class="row">
+                    <div class="col-12 d-flex">
+                        <div class="col-4">
+                            <img class="img-fluid" :src="activeRecipe.img" alt="">
+                        </div>
+                        <div class="col-4 p-3">
+                            <h3>{{ activeRecipe.title }}</h3>
+                            <p>{{ activeRecipe.instructions }}</p>
+                        </div>
+                        <div v-for="ingredient in ingredients" :key="ingredient.id" class="col-4">
+                            <div class="text-end">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <h4>{{ ingredient.quantity }} {{ ingredient.name }}</h4>
+                        </div>
+
+                    </div>
+
+                </section>
             </div>
         </div>
     </div>
@@ -16,29 +28,35 @@
 
 
 <script>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch, watchEffect } from 'vue';
 import { ingredientsService } from '../services/IngredientsService.js'
 import Pop from '../utils/Pop';
 import { AppState } from '../AppState';
 
 
+
 export default {
     setup() {
-        onMounted(() => {
 
-            // getIngredientByRecipeId()
+        watchEffect(() => {
+            if (AppState.activeRecipe) {
+                getIngredientByRecipeId()
+            }
         })
-        // async function getIngredientByRecipeId() {
-        //     try {
-        //         // const recipeId = id
-        //         await ingredientsService.getIngredientsByRecipeId(recipeId)
+        async function getIngredientByRecipeId() {
+            try {
 
-        //     } catch (error) {
-        //         Pop.error(error)
-        //     }
-        // }
+                const recipeId = AppState.activeRecipe.id
+                await ingredientsService.getIngredientsByRecipeId(recipeId)
+
+            } catch (error) {
+                Pop.error(error)
+            }
+        }
         return {
-            activeRecipe: computed(() => AppState.activeRecipe)
+
+            activeRecipe: computed(() => AppState.activeRecipe),
+            ingredients: computed(() => AppState.ingredients)
 
 
         };

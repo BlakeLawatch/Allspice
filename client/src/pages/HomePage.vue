@@ -29,9 +29,9 @@ import Pop from '../utils/Pop';
 import { recipesService } from '../services/RecipesService.js'
 
 
+
 export default {
   setup() {
-
     onMounted(() => {
       getRecipes();
     });
@@ -45,10 +45,9 @@ export default {
     }
     return {
       recipes: computed(() => AppState.recipes),
-
-
     };
   },
+
 }
 </script>
 

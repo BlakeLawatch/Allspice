@@ -6,7 +6,6 @@
             <p>{{ recipe.category }}</p>
         </div>
     </div>
-    <RecipeModal />
 </template>
 
 
