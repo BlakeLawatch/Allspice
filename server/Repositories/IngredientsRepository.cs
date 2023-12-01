@@ -1,6 +1,3 @@
-
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-
 namespace Allspice.Repositories;
 
 public class IngredientsRepository
@@ -32,5 +29,23 @@ public class IngredientsRepository
             return ingredient;
         }, ingredientData).FirstOrDefault();
         return ingredient;
+    }
+
+    internal List<Ingredient> GetIngredientsByRecipeId(int recipeId)
+    {
+        string sql = @"
+       SELECT
+       ing.*,
+       acc.*
+        FROM ingredients ing
+        JOIN accounts acc ON acc.id = ing.creatorId
+        WHERE ing.recipeId = @recipeId;";
+
+        List<Ingredient> ingredients = _db.Query<Ingredient, Account, Ingredient>(sql, (ingredient, account) =>
+        {
+            ingredient.Creator = account;
+            return ingredient;
+        }, new { recipeId }).ToList();
+        return ingredients;
     }
 }

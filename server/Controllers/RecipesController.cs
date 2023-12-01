@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace Allspice.Controllers;
 
 [ApiController]
@@ -6,11 +8,13 @@ public class RecipesController : ControllerBase
 {
     private readonly RecipesService _recipesService;
     private readonly Auth0Provider _auth0Provider;
+    private readonly IngredientsService _ingredientsService;
 
-    public RecipesController(Auth0Provider auth0Provider, RecipesService recipesService)
+    public RecipesController(Auth0Provider auth0Provider, RecipesService recipesService, IngredientsService ingredientsService)
     {
         _auth0Provider = auth0Provider;
         _recipesService = recipesService;
+        _ingredientsService = ingredientsService;
     }
 
 
@@ -99,4 +103,20 @@ public class RecipesController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+
+    [HttpGet("{recipeId}/ingredients")]
+    public ActionResult<List<Ingredient>> GetIngredientsByRecipeId(int recipeId)
+    {
+        try
+        {
+            List<Ingredient> ingredients = _ingredientsService.GetIngredientsByRecipeId(recipeId);
+            return Ok(ingredients);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
+
+
