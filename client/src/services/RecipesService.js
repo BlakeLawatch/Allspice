@@ -1,5 +1,6 @@
 import { AppState } from "../AppState"
 import { Recipe } from "../models/Recipe"
+import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
 class RecipesService {
@@ -13,6 +14,11 @@ class RecipesService {
 
     setActiveRecipe(recipe) {
         AppState.activeRecipe = recipe
+    }
+
+    async createRecipe(formData) {
+        const res = await api.post(`api/recipes`, formData)
+        logger.log('created a recipe FINISH IN THE SERVICE', res.data)
     }
 }
 

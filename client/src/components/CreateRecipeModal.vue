@@ -7,28 +7,37 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form @submit.prevent="createRecipe()">
                         <div class="d-flex justify-content-between">
                             <div class="mb-3 text-start">
                                 <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" required>
+                                <input v-model="editable.title" type="text" class="form-control" id="title" required
+                                    maxlength="225">
                             </div>
                             <div class="mb-3 text-start">
-                                <label for="exampleInputPassword1" class="form-label">Category</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1">
+                                <label for="category" class="form-label">Category</label>
+                                <select v-model="editable.category" id="category" class="form-select">
+                                    <option :value="recipeType" v-for="recipeType in recipeTypes" :key="recipeType">{{
+                                        recipeType }}</option>
+                                </select>
                             </div>
-
                         </div>
                         <div class="mb-3 text-start">
-                            <label for="exampleInputPassword1" class="form-label">Image URL</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
+                            <label for="img" class="form-label">Image URL</label>
+                            <input v-model="editable.img" type="url" class="form-control" id="img" required>
                         </div>
+                        <div class="mb-3 text-start">
+                            <label for="instructions" class="form-label">Instructions </label>
+                            <input v-model="editable.instructions" type="text" class="form-control" id="instructions"
+                                required>
+                        </div>
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+
+
             </div>
         </div>
     </div>
@@ -37,9 +46,33 @@
 
 <script>
 
+import { Modal } from 'bootstrap';
+import { recipesService } from '../services/RecipesService';
+import Pop from '../utils/Pop';
+import { ref } from 'vue';
+
+
+
 export default {
     setup() {
-        return {}
+        const recipeTypes = ["Cheese", "Specialty Coffee", "Soup", "Mexican", "Italian"]
+        const editable = ref({})
+        return {
+            recipeTypes,
+            editable,
+
+            async createRecipe() {
+                try {
+                    const formData = editable.value
+                    recipesService.createRecipe(formData)
+                    Pop.success('You created a recipe')
+                    editable.value = {}
+                    Modal.getOrCreateInstance('#createRecipe').hide()
+                } catch (error) {
+                    Pop.error(error)
+                }
+            }
+        }
     }
 };
 </script>
