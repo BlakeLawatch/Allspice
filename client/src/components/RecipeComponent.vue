@@ -6,6 +6,7 @@
             <p @click="unFavoriteRecipe()" class="mdi mdi-heart fs-2"></p>
             <p>{{ recipe.title }}</p>
             <p>{{ recipe.category }}</p>
+
         </div>
     </div>
 </template>
@@ -25,6 +26,7 @@ export default {
     props: { recipe: { type: Recipe, required: true } },
     setup(props) {
         return {
+            account: computed(() => AppState.account),
             recipes: computed(() => AppState.recipes),
             activeRecipe: computed(() => AppState.activeRecipe),
 

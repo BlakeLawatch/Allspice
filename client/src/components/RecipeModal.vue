@@ -45,6 +45,13 @@
                         </form>
 
                     </div>
+                    <div class="col-12">
+
+                        <button v-if="account.id == activeRecipe.creatorId" @click="destroyRecipe(activeRecipe.id)"><i
+                                class="mdi mdi-delete-empty fs-1"></i></button>
+
+                    </div>
+
                 </section>
             </div>
         </div>
@@ -87,6 +94,7 @@ export default {
         return {
             editable,
             editableIngredients,
+            account: computed(() => AppState.account),
             activeRecipe: computed(() => AppState.activeRecipe),
             ingredients: computed(() => AppState.ingredients),
 
@@ -122,6 +130,14 @@ export default {
                 } catch (error) {
                     Pop.error(error)
                 }
+            },
+
+            async destroyRecipe(recipeId) {
+                const wantToDelete = await Pop.confirm("You sure about that?")
+                if (!wantToDelete) {
+                    return
+                }
+                await recipesService.destroyRecipe(recipeId)
             }
 
         };

@@ -68,6 +68,7 @@ export default {
     return {
       recipeTypes,
       search,
+      account: computed(() => AppState.account),
       recipes: computed(() => {
         if (filteredRecipeTypes.value) {
           return AppState.recipes.filter(
@@ -95,7 +96,9 @@ export default {
         }
 
 
-      }
+      },
+
+
     };
 
 

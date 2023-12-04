@@ -55,6 +55,14 @@ class RecipesService {
         AppState.recipes.splice(recipeIndex, 1, newRecipe)
         logger.log('created instructions FINISH IN THE SERVICE', res.data)
     }
+
+    async destroyRecipe(recipeId) {
+        const res = await api.delete(`api/ingredients/${recipeId}`)
+        const index = AppState.recipes.findIndex(recipe => recipe.id == recipeId)
+        AppState.recipes.splice(newRecipe, 1)
+        AppState.activeRecipe = {}
+        logger.log('destroyed recipe FINISH IN THE SERVICE', res.data)
+    }
 }
 
 export const recipesService = new RecipesService()
