@@ -1,18 +1,18 @@
 <template>
   <div class="container-fluid">
     <section class="row">
-      <div>
-        <form @submit.prevent="searchRecipes()">
-          <input v-model="search" class="form-control" type="search">
-          <button type="submit" class="btn btn-success">Search</button>
-        </form>
-      </div>
-      <div class="text-center">
+      <div class="text-center my-3">
         <button @click="changeRecipeType('')" class="rounded-pill mx-1">All</button>
         <button @click="changeRecipeType(recipeType)" class="rounded-pill mx-1" v-for="recipeType in recipeTypes"
           :key="recipeType">
           {{ recipeType }}
         </button>
+      </div>
+      <div>
+        <form @submit.prevent="searchRecipes()" class="d-flex my-3">
+          <input v-model="search" class="form-control" type="search">
+          <button type="submit" class="btn btn-success">Search</button>
+        </form>
       </div>
     </section>
 

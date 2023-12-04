@@ -10,11 +10,13 @@
                     <div class="col-4 p-3">
                         <h3>{{ activeRecipe.title }}</h3>
                         <p>{{ activeRecipe.instructions }}</p>
+                        <p @click="destroyInstruction(ingredient.id)" class="mdi mdi-"></p>
                     </div>
                     <div class="col-4">
                         <div v-for="ingredient in ingredients" :key="ingredient.id">
                             <h4>{{ ingredient.quantity }} {{ ingredient.name }} </h4>
-                            <p @click="destroyIngredient(ingredient.id)"><i class="mdi mdi-delete-empty"></i></p>
+                            <p @click="destroyIngredient(ingredient.id)"><i class="mdi mdi-delete-empty selectable"
+                                    :title="ingredient.name"></i></p>
                         </div>
 
                     </div>
@@ -68,6 +70,7 @@ import { AppState } from '../AppState';
 import { recipesService } from '../services/RecipesService';
 import { router } from '../router';
 import { useRouter } from 'vue-router';
+import { Modal } from 'bootstrap';
 
 
 
@@ -117,6 +120,7 @@ export default {
 
             },
 
+
             async addIngredients() {
                 const ingredientData = editableIngredients.value
                 ingredientData.recipeId = AppState.activeRecipe.id
@@ -131,6 +135,7 @@ export default {
                         return
                     }
                     await ingredientsService.destroyIngredient(ingredientId)
+
                 } catch (error) {
                     Pop.error(error)
                 }
@@ -143,7 +148,7 @@ export default {
                         return
                     }
                     await recipesService.destroyRecipe(recipeId)
-                    router.push({ name: 'HomePage' })
+                    Modal.getOrCreateInstance('#recipeModal').hide()
                 } catch (error) {
                     Pop.error(error)
                 }

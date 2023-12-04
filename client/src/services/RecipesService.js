@@ -1,6 +1,7 @@
 import { AppState } from "../AppState"
 import { Favorite } from "../models/Favorite"
 import { Recipe } from "../models/Recipe"
+import { router } from "../router"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 
@@ -47,9 +48,8 @@ class RecipesService {
     async destroyRecipe(recipeId) {
         const res = await api.delete(`api/recipes/${recipeId}`)
         const index = AppState.recipes.findIndex(recipe => recipe.id == recipeId)
-        AppState.recipes.splice(index, 1, res.data)
-        AppState.activeRecipe = {}
-
+        AppState.recipes.splice(index, 1)
+        AppState.activeRecipe = null
         logger.log('destroyed recipe FINISH IN THE SERVICE', res.data)
     }
 }

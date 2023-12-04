@@ -1,4 +1,5 @@
 import { AppState } from "../AppState"
+import { Favorite } from "../models/Favorite"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 

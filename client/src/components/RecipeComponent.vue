@@ -1,13 +1,17 @@
 <template>
-    <div @click="setActiveRecipe()" class="col-12 p-2" data-bs-toggle="modal" data-bs-target="#recipeModal">
-        <img class="img-fluid" :src="recipe.img" alt="" :title="recipe.title">
+    <div @click="setActiveRecipe()" class="selectable col-12 p-2 recipe_cardImg" :title="recipe.title"
+        data-bs-toggle="modal" data-bs-target="#recipeModal">
+        <div class="row justify-content-end text-end my-4">
+            <!-- NOTE fix the conditional render -->
+            <p v-if="favorite" @click="createFavorite()" class="col-2 mdi mdi-heart-outline fs-2 bg_card"></p>
+            <p v-else @click="unFavoriteRecipe()" class="col-2 mdi mdi-heart fs-2 bg_card"></p>
+        </div>
+        <div class="text-light bg_card rounded-pill text-center mx-4">
+            <p>{{ recipe.title }}</p>
+            <p>{{ recipe.category }}</p>
+        </div>
     </div>
     <div>
-        <p @click="createFavorite()" class="mdi mdi-heart-outline fs-2"></p>
-        <p @click="unFavoriteRecipe()" class="mdi mdi-heart fs-2"></p>
-        <p>{{ recipe.title }}</p>
-        <p>{{ recipe.category }}</p>
-
     </div>
 </template>
 
@@ -30,6 +34,8 @@ export default {
             account: computed(() => AppState.account),
             recipes: computed(() => AppState.recipes),
             activeRecipe: computed(() => AppState.activeRecipe),
+            coverImg: computed(() => `url(${props.recipe.img})`),
+            favorite: computed(() => AppState.favorites),
 
 
             setActiveRecipe() {
@@ -61,4 +67,16 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.recipe_cardImg {
+    background-image: v-bind(coverImg);
+    background-position: center;
+    background-size: cover;
+}
+
+.bg_card {
+
+    backdrop-filter: blur(15px);
+
+}
+</style>
