@@ -3,21 +3,22 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <section v-if="activeRecipe" class="row">
-                    <div class="col-12 d-flex">
-                        <div class="col-4">
-                            <img class="img-fluid" :src="activeRecipe.img" alt="">
-                        </div>
-                        <div class="col-4 p-3">
-                            <h3>{{ activeRecipe.title }}</h3>
-                            <p>{{ activeRecipe.instructions }}</p>
-                        </div>
-                        <div v-for="ingredient in ingredients" :key="ingredient.id" class="col-4">
-                            <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <h4>{{ ingredient.quantity }} {{ ingredient.name }}</h4>
-                        </div>
+
+                    <div class="col-4">
+                        <img class="img-fluid" :src="activeRecipe.img" alt="">
                     </div>
+                    <div class="col-4 p-3">
+                        <h3>{{ activeRecipe.title }}</h3>
+                        <p>{{ activeRecipe.instructions }}</p>
+                    </div>
+                    <div class="col-4">
+                        <div v-for="ingredient in ingredients" :key="ingredient.id">
+                            <h4>{{ ingredient.quantity }} {{ ingredient.name }} </h4>
+                            <p @click="destroyIngredient(ingredient.id)"><i class="mdi mdi-delete-empty"></i></p>
+                        </div>
+
+                    </div>
+
                     <div class="col-6">
                         <form @submit.prevent="createInstruction()">
                             <div class="mb-3 text-start">
@@ -109,6 +110,18 @@ export default {
                 ingredientData.recipeId = AppState.activeRecipe.id
                 await ingredientsService.addIngredients(ingredientData, ingredientData.recipeId)
                 editableIngredients.value = {}
+            },
+
+            async destroyIngredient(ingredientId) {
+                try {
+                    const wantToDelete = await Pop.confirm("You sure about that?")
+                    if (!wantToDelete) {
+                        return
+                    }
+                    await ingredientsService.destroyIngredient(ingredientId)
+                } catch (error) {
+                    Pop.error(error)
+                }
             }
 
         };
