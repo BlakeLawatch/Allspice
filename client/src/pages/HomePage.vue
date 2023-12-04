@@ -8,6 +8,12 @@
           <!-- <h2>Cherish your family and their cooking</h2> -->
         </div>
       </div>
+      <div>
+        <form @submit.prevent="searchRecipes()">
+          <input v-model="search" class="form-control" type="search">
+          <button type="submit" class="btn btn-success">Search</button>
+        </form>
+      </div>
       <div class="text-center">
         <button @click="changeRecipeType('')" class="rounded-pill mx-1">All</button>
         <button @click="changeRecipeType(recipeType)" class="rounded-pill mx-1" v-for="recipeType in recipeTypes"
@@ -45,6 +51,7 @@ export default {
   setup() {
     const recipeTypes = ["Cheese", "Specialty Coffee", "Soup", "Mexican", "Italian"]
     const filteredRecipeTypes = ref('')
+    const search = ref('')
 
 
     onMounted(() => {
@@ -60,6 +67,7 @@ export default {
     }
     return {
       recipeTypes,
+      search,
       recipes: computed(() => {
         if (filteredRecipeTypes.value) {
           return AppState.recipes.filter(
@@ -73,6 +81,20 @@ export default {
       async changeRecipeType(recipeType) {
         logger.log('this is the recipe type', recipeType)
         filteredRecipeTypes.value = recipeType
+      },
+
+      searchRecipes() {
+        try {
+          if (search.value == '') {
+            getRecipes()
+            return
+          }
+
+        } catch (error) {
+          Pop.error(error)
+        }
+
+
       }
     };
 

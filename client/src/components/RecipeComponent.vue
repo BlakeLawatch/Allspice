@@ -2,6 +2,8 @@
     <div @click="setActiveRecipe()" class="col-12 p-2" data-bs-toggle="modal" data-bs-target="#recipeModal">
         <img class="img-fluid" :src="recipe.img" alt="" :title="recipe.title">
         <div>
+            <p @click="createFavorite()" class="mdi mdi-heart-outline"></p>
+            <p class="mdi mdi-heart"></p>
             <p>{{ recipe.title }}</p>
             <p>{{ recipe.category }}</p>
         </div>
@@ -28,6 +30,10 @@ export default {
 
             setActiveRecipe() {
                 recipesService.setActiveRecipe(props.recipe)
+            },
+
+            async createFavorite() {
+
             }
 
         };

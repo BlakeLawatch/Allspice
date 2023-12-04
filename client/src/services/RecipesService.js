@@ -20,6 +20,16 @@ class RecipesService {
         const res = await api.post(`api/recipes`, formData)
         logger.log('created a recipe FINISH IN THE SERVICE', res.data)
     }
+
+    searchRecipes(search) {
+        if (search) {
+            const foundRecipes = AppState.recipes.filter(recipe => recipe.category == search)
+            logger.log(foundRecipes, 'found recipes')
+        } else {
+            this.getRecipes()
+            return AppState.recipes
+        }
+    }
 }
 
 export const recipesService = new RecipesService()
