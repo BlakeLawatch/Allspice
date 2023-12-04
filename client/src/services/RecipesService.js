@@ -35,12 +35,25 @@ class RecipesService {
     async favoriteRecipe(recipeId) {
         const res = await api.post(`api/favorites`, { recipeId })
         AppState.favorites.push(new Favorite(res.data))
+
         // logger.log('Created a favorite!?!?! FINISH IN THE SERVICE', res.data)
     }
 
     async unFavoriteRecipe(favoriteId) {
         const res = await api.delete(`api/favorites/${favoriteId}`)
         logger.log('unfavorited this recipe? FINISH IN THE SERVICE', res.data)
+    }
+
+    async createInstruction(instructionData, instructionId) {
+        const res = await api.put(`api/recipes/${instructionId}`, instructionData)
+        const newRecipe = new Recipe(res.data)
+        AppState.activeRecipe = newRecipe
+        const recipeIndex = AppState.recipes.findIndex(recipe => recipe.id == instructionId)
+        if (recipeIndex == -1) {
+            throw new Error('no recipe with this ID')
+        }
+        AppState.recipes.splice(recipeIndex, 1, newRecipe)
+        logger.log('created instructions FINISH IN THE SERVICE', res.data)
     }
 }
 
