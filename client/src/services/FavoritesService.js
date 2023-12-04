@@ -17,6 +17,12 @@ class FavoritesService {
         const res = await api.delete(`api/favorites/${favoriteId}`)
         logger.log('unfavorited this recipe? FINISH IN THE SERVICE', res.data)
     }
+
+    async getMyFavorites() {
+        const res = await api.get(`account/favorites`)
+        AppState.myFavorites = res.data.map(pojo => new Favorite(pojo))
+        logger.log('got favorites FINISH IN THE SERVICE', AppState.myFavorites)
+    }
 }
 
 export const favoritesService = new FavoritesService()

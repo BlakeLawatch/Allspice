@@ -3,7 +3,7 @@
         data-bs-toggle="modal" data-bs-target="#recipeModal">
         <div class="row justify-content-end text-end my-4">
             <!-- NOTE fix the conditional render -->
-            <p v-if="favorite" @click="createFavorite()" class="col-2 mdi mdi-heart-outline fs-2 bg_card"></p>
+            <p v-if="favorite.id" @click="createFavorite()" class="col-2 mdi mdi-heart-outline fs-2 bg_card"></p>
             <p v-else @click="unFavoriteRecipe()" class="col-2 mdi mdi-heart fs-2 bg_card"></p>
         </div>
         <div class="text-light bg_card rounded-pill text-center mx-4">
@@ -35,7 +35,7 @@ export default {
             recipes: computed(() => AppState.recipes),
             activeRecipe: computed(() => AppState.activeRecipe),
             coverImg: computed(() => `url(${props.recipe.img})`),
-            favorite: computed(() => AppState.favorites),
+            favorite: computed(() => AppState.myFavorites),
 
 
             setActiveRecipe() {
