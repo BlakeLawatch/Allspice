@@ -20,6 +20,8 @@ CREATE TABLE
         creatorId CHAR(225) NOT NULL
     ) default charset utf8 COMMENT '';
 
+DROP TABLE recipes
+
 -- INSERT INTO
 
 --     recipes(

@@ -1,13 +1,6 @@
 <template>
   <div class="container-fluid">
     <section class="row">
-
-      <div class="col-12">
-        <div class="header_img text-light d-flex justify-content-center align-items-center">
-          <h1>Allspice</h1>
-          <!-- <h2>Cherish your family and their cooking</h2> -->
-        </div>
-      </div>
       <div>
         <form @submit.prevent="searchRecipes()">
           <input v-model="search" class="form-control" type="search">
@@ -98,6 +91,10 @@ export default {
 
       },
 
+      async getMyFavorites() {
+
+      }
+
 
     };
 
@@ -108,14 +105,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.header_img {
-  height: 35vh;
-  background-size: cover;
-  border-radius: 15px;
-  background-position: center;
-  background-image: url(https://images.unsplash.com/photo-1437252611977-07f74518abd7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2hlYXR8ZW58MHx8MHx8fDA%3D);
-}
-
 .shadow {
   box-shadow: 2px 2px 10px gray;
 }

@@ -47,8 +47,8 @@
                     </div>
                     <div class="col-12">
 
-                        <button v-if="account.id == activeRecipe.creatorId" @click="destroyRecipe(activeRecipe.id)"><i
-                                class="mdi mdi-delete-empty fs-1"></i></button>
+                        <button v-if="account.id == activeRecipe.creatorId" @click="destroyRecipe(activeRecipe.id)">
+                            {{ activeRecipe.id }}<i class="mdi mdi-delete-empty fs-1"></i></button>
 
                     </div>
 
@@ -66,6 +66,8 @@ import Pop from '../utils/Pop';
 import { AppState } from '../AppState';
 
 import { recipesService } from '../services/RecipesService';
+import { router } from '../router';
+import { useRouter } from 'vue-router';
 
 
 
@@ -74,6 +76,7 @@ export default {
     setup() {
         const editable = ref({})
         const editableIngredients = ref({})
+        const router = useRouter()
 
 
         watchEffect(() => {
@@ -94,6 +97,7 @@ export default {
         return {
             editable,
             editableIngredients,
+            router,
             account: computed(() => AppState.account),
             activeRecipe: computed(() => AppState.activeRecipe),
             ingredients: computed(() => AppState.ingredients),
@@ -133,11 +137,16 @@ export default {
             },
 
             async destroyRecipe(recipeId) {
-                const wantToDelete = await Pop.confirm("You sure about that?")
-                if (!wantToDelete) {
-                    return
+                try {
+                    const wantToDelete = await Pop.confirm("You sure about that?")
+                    if (!wantToDelete) {
+                        return
+                    }
+                    await recipesService.destroyRecipe(recipeId)
+                    router.push({ name: 'HomePage' })
+                } catch (error) {
+                    Pop.error(error)
                 }
-                await recipesService.destroyRecipe(recipeId)
             }
 
         };

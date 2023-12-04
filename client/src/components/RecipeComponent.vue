@@ -1,13 +1,13 @@
 <template>
     <div @click="setActiveRecipe()" class="col-12 p-2" data-bs-toggle="modal" data-bs-target="#recipeModal">
         <img class="img-fluid" :src="recipe.img" alt="" :title="recipe.title">
-        <div>
-            <p @click="createFavorite()" class="mdi mdi-heart-outline fs-2"></p>
-            <p @click="unFavoriteRecipe()" class="mdi mdi-heart fs-2"></p>
-            <p>{{ recipe.title }}</p>
-            <p>{{ recipe.category }}</p>
+    </div>
+    <div>
+        <p @click="createFavorite()" class="mdi mdi-heart-outline fs-2"></p>
+        <p @click="unFavoriteRecipe()" class="mdi mdi-heart fs-2"></p>
+        <p>{{ recipe.title }}</p>
+        <p>{{ recipe.category }}</p>
 
-        </div>
     </div>
 </template>
 
@@ -19,6 +19,7 @@ import { Recipe } from '../models/Recipe';
 import { AppState } from '../AppState';
 import RecipeModal from './RecipeModal.vue';
 import { recipesService } from '../services/RecipesService';
+import { favoritesService } from '../services/FavoritesService';
 import Pop from '../utils/Pop';
 
 
@@ -38,7 +39,7 @@ export default {
             async createFavorite() {
                 try {
                     const recipeId = props.recipe.id
-                    await recipesService.favoriteRecipe(recipeId)
+                    await favoritesService.favoriteRecipe(recipeId)
                 } catch (error) {
                     Pop.error(error)
                 }
@@ -47,7 +48,7 @@ export default {
             async unFavoriteRecipe() {
                 try {
                     const recipeId = props.recipe.id
-                    await recipesService.unFavoriteRecipe(recipeId)
+                    await favoritesService.unFavoriteRecipe(favoriteId)
                 } catch (error) {
                     Pop.error(error)
                 }

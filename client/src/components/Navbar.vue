@@ -1,21 +1,21 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark px-3">
+  <nav class="header_img navbar navbar-expand-sm navbar-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <h1 class="mdi mdi-liquor text-dark"></h1>
+      <div class="d-flex flex-column">
+        <h1 class="mdi mdi-liquor text-light"></h1>
       </div>
     </router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
       aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarText">
 
       <!-- LOGIN COMPONENT HERE -->
-      <div>
+      <!-- <div>
         <button class="btn text-light" @click="toggleTheme"><i class="mdi"
             :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i></button>
-      </div>
+      </div> -->
       <Login />
     </div>
   </nav>
@@ -66,5 +66,14 @@ a:hover {
   nav {
     height: 64px;
   }
+}
+
+.header_img {
+  height: 15vh;
+  background-size: cover;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-position: center;
+  background-image: url(https://i0.wp.com/www.faithanddoubt.com/wp-content/uploads/hossein-farahani-pqJ21tErTgI-unsplash-edited-scaled.jpg?fit=2560%2C1437&ssl=1);
 }
 </style>

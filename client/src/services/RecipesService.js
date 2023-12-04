@@ -32,18 +32,6 @@ class RecipesService {
         }
     }
 
-    async favoriteRecipe(recipeId) {
-        const res = await api.post(`api/favorites`, { recipeId })
-        AppState.favorites.push(new Favorite(res.data))
-
-        // logger.log('Created a favorite!?!?! FINISH IN THE SERVICE', res.data)
-    }
-
-    async unFavoriteRecipe(favoriteId) {
-        const res = await api.delete(`api/favorites/${favoriteId}`)
-        logger.log('unfavorited this recipe? FINISH IN THE SERVICE', res.data)
-    }
-
     async createInstruction(instructionData, instructionId) {
         const res = await api.put(`api/recipes/${instructionId}`, instructionData)
         const newRecipe = new Recipe(res.data)
@@ -57,10 +45,11 @@ class RecipesService {
     }
 
     async destroyRecipe(recipeId) {
-        const res = await api.delete(`api/ingredients/${recipeId}`)
+        const res = await api.delete(`api/recipes/${recipeId}`)
         const index = AppState.recipes.findIndex(recipe => recipe.id == recipeId)
-        AppState.recipes.splice(newRecipe, 1)
+        AppState.recipes.splice(index, 1, res.data)
         AppState.activeRecipe = {}
+
         logger.log('destroyed recipe FINISH IN THE SERVICE', res.data)
     }
 }
