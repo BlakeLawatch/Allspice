@@ -11,7 +11,7 @@ class RecipesService {
     async getRecipes() {
         const res = await api.get('api/recipes')
         AppState.recipes = res.data.map(pojo => new Recipe(pojo))
-        // logger.log('got recipes FINISH IN THE SERVICE', AppState.recipes)
+        logger.log('got recipes FINISH IN THE SERVICE', AppState.recipes)
     }
 
     setActiveRecipe(recipe) {

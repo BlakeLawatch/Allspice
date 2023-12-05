@@ -8,12 +8,7 @@
           {{ recipeType }}
         </button>
       </div>
-      <div>
-        <form @submit.prevent="searchRecipes()" class="d-flex my-3">
-          <input v-model="search" class="form-control" type="search">
-          <button type="submit" class="btn btn-success">Search</button>
-        </form>
-      </div>
+
     </section>
 
     <section class="row d-flex justify-content-around">
@@ -76,22 +71,6 @@ export default {
         logger.log('this is the recipe type', recipeType)
         filteredRecipeTypes.value = recipeType
       },
-
-      searchRecipes() {
-        try {
-          if (search.value == '') {
-            getRecipes()
-            return
-          }
-
-        } catch (error) {
-          Pop.error(error)
-        }
-
-
-      },
-
-
 
 
     };

@@ -16,6 +16,12 @@
         <button class="btn text-light" @click="toggleTheme"><i class="mdi"
             :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i></button>
       </div> -->
+      <div>
+        <form @submit.prevent="searchRecipes()" class="d-flex me-2">
+          <input v-model="search" class="form-control" type="search">
+          <button type="submit w-10" class="btn btn-success">Search</button>
+        </form>
+      </div>
       <Login />
     </div>
   </nav>
@@ -40,7 +46,21 @@ export default {
         theme.value = theme.value == 'light' ? 'dark' : 'light'
         document.documentElement.setAttribute('data-bs-theme', theme.value)
         saveState('theme', theme.value)
-      }
+      },
+
+      searchRecipes() {
+        try {
+          if (search.value == '') {
+            getRecipes()
+            return
+          }
+
+        } catch (error) {
+          Pop.error(error)
+        }
+
+
+      },
     }
   },
   components: { Login }
