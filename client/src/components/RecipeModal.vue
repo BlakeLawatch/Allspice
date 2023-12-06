@@ -50,7 +50,7 @@
                     <div class="col-12">
 
                         <button v-if="account.id == activeRecipe.creatorId" @click="destroyRecipe(activeRecipe.id)">
-                            {{ activeRecipe.id }}<i class="mdi mdi-delete-empty fs-1"></i></button>
+                            <i class="mdi mdi-delete-empty fs-1"></i></button>
 
                     </div>
 

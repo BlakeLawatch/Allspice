@@ -1,6 +1,7 @@
 export class Favorite {
     constructor(data) {
         this.id = data.id
+        this.favoriteId = data.favoriteId
         this.recipeId = data.recipeId
         this.accountId = data.accountId
         this.title = data.title

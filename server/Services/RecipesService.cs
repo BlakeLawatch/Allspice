@@ -59,9 +59,9 @@ public class RecipesService
         return recipe;
     }
 
-    internal List<Recipe> GetRecipes()
+    internal List<Recipe> GetRecipes(string query)
     {
-        List<Recipe> recipes = _repository.GetRecipes();
+        List<Recipe> recipes = _repository.GetRecipes(query);
         return recipes;
     }
 }

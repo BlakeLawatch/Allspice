@@ -18,7 +18,7 @@
       </div> -->
       <div>
         <form @submit.prevent="searchRecipes()" class="d-flex me-2">
-          <input v-model="search" class="form-control" type="search">
+          <input v-model="editable" type="text" class="form-control" id="recipes">
           <button type="submit w-10" class="btn btn-success">Search</button>
         </form>
       </div>
@@ -28,13 +28,17 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
+import { AppState } from '../AppState';
+import { recipesService } from '../services/RecipesService';
+import Pop from '../utils/Pop';
 export default {
   setup() {
 
     const theme = ref(loadState('theme') || 'light')
+    const editable = ref('')
 
     onMounted(() => {
       document.documentElement.setAttribute('data-bs-theme', theme.value)
@@ -42,20 +46,26 @@ export default {
 
     return {
       theme,
+      editable,
+      recipes: computed(() => AppState.recipes),
+
+
       toggleTheme() {
         theme.value = theme.value == 'light' ? 'dark' : 'light'
         document.documentElement.setAttribute('data-bs-theme', theme.value)
         saveState('theme', theme.value)
       },
 
-      searchRecipes() {
+      async searchRecipes() {
         try {
-          if (search.value == '') {
-            getRecipes()
-            return
-          }
+          // if (search.value == '') {
+          //   getRecipes()
+          //   return
+          const query = editable.value
+          await recipesService.searchRecipes(query)
+        }
 
-        } catch (error) {
+        catch (error) {
           Pop.error(error)
         }
 

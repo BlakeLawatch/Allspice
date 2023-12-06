@@ -27,21 +27,27 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import { AppState } from '../AppState';
 import Pop from '../utils/Pop';
 import { recipesService } from '../services/RecipesService.js'
 import { logger } from '../utils/Logger';
+import RecipeComponent from '../components/RecipeComponent.vue';
 
 
 
 export default {
   setup() {
-    const recipeTypes = ["Cheese", "Specialty Coffee", "Soup", "Mexican", "Italian"]
-    const filteredRecipeTypes = ref('')
-    const search = ref('')
 
 
+    const recipeTypes = ["Cheese", "Specialty Coffee", "Soup", "Mexican", "Italian"];
+    const filteredRecipeTypes = ref('');
+    const search = ref('');
+    // watchEffect(() => {
+    //   if (AppState.recipes) {
+    //     getRecipes()
+    //   }
+    // })
     onMounted(() => {
       getRecipes();
     });
@@ -57,27 +63,29 @@ export default {
       recipeTypes,
       search,
       account: computed(() => AppState.account),
+      // recipes: computed(() => AppState.recipes),
       recipes: computed(() => {
         if (filteredRecipeTypes.value) {
-          return AppState.recipes.filter(
-            pojo => pojo.category == filteredRecipeTypes.value
-          )
-        } else {
-          return AppState.recipes
+          return AppState.recipes.filter(pojo => pojo.category == filteredRecipeTypes.value);
+        }
+        else {
+          return AppState.recipes;
         }
       }),
+      types: computed(() => {
+        if (recipeFilter == favorites) {
+          return AppState.myFavorites
+        }
+      }
+      ),
 
       async changeRecipeType(recipeType) {
-        logger.log('this is the recipe type', recipeType)
-        filteredRecipeTypes.value = recipeType
+        logger.log('this is the recipe type', recipeType);
+        filteredRecipeTypes.value = recipeType;
       },
-
-
     };
-
-
   },
-
+  components: { RecipeComponent }
 }
 </script>
 

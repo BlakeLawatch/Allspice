@@ -8,14 +8,18 @@ class FavoritesService {
 
     async favoriteRecipe(recipeId) {
         const res = await api.post(`api/favorites`, { recipeId })
-        AppState.favorites.push(new Favorite(res.data))
+        AppState.myFavorites.push(new Favorite(res.data))
+        this.getMyFavorites()
 
-        // logger.log('Created a favorite!?!?! FINISH IN THE SERVICE', res.data)
+        logger.log('Created a favorite!?!?! FINISH IN THE SERVICE', res.data)
     }
 
     async unFavoriteRecipe(favoriteId) {
         const res = await api.delete(`api/favorites/${favoriteId}`)
-        logger.log('unfavorited this recipe? FINISH IN THE SERVICE', res.data)
+        AppState.favorites.splice(0, 1)
+        this.getMyFavorites()
+
+        logger.log('unfavorited this recipe? FINISH IN THE SERVICE', AppState.favorites)
     }
 
     async getMyFavorites() {
