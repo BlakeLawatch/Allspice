@@ -21,6 +21,7 @@ class RecipesService {
 
     async createRecipe(formData) {
         const res = await api.post(`api/recipes`, formData)
+        AppState.recipes.push(new Recipe(res.data))
         logger.log('created a recipe FINISH IN THE SERVICE', res.data)
     }
 
