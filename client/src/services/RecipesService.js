@@ -1,4 +1,5 @@
 import { AppState } from "../AppState"
+import { Account } from "../models/Account"
 import { Favorite } from "../models/Favorite"
 import { Recipe } from "../models/Recipe"
 import { router } from "../router"
@@ -49,6 +50,22 @@ class RecipesService {
         AppState.recipes = res.data.map(pojo => new Recipe(pojo))
         // logger.log('got search working FINISH IN THE SERVICE', AppState.recipes)
 
+    }
+
+    changeFilterType(filter) {
+        if (filter == 'Home') {
+            AppState.filteredRecipes = AppState.recipes
+            logger.log('got home recipes', AppState.filteredRecipes)
+        }
+        if (filter == 'My Favorites') {
+            AppState.filteredRecipes = AppState.myFavorites
+            logger.log('got favorite recipes', AppState.filteredRecipes)
+        }
+        if (filter == 'My Recipes') {
+
+            AppState.filteredRecipes = AppState.recipes.filter(recipe => recipe.creatorId == Account.id)
+            logger.log('got my created recipes', AppState.filteredRecipes)
+        }
     }
 }
 

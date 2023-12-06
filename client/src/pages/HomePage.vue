@@ -8,6 +8,10 @@
           {{ recipeType }}
         </button>
       </div>
+      <div v-for="filter in filters" :key="filter">
+        <button @click="changeFilterType(filter)">{{ filter }}</button>
+
+      </div>
 
     </section>
 
@@ -38,16 +42,11 @@ import RecipeComponent from '../components/RecipeComponent.vue';
 
 export default {
   setup() {
-
-
+    const filters = ["Home", "My Favorites", "My Recipes"]
     const recipeTypes = ["Cheese", "Specialty Coffee", "Soup", "Mexican", "Italian"];
     const filteredRecipeTypes = ref('');
     const search = ref('');
-    // watchEffect(() => {
-    //   if (AppState.recipes) {
-    //     getRecipes()
-    //   }
-    // })
+
     onMounted(() => {
       getRecipes();
     });
@@ -62,6 +61,7 @@ export default {
     return {
       recipeTypes,
       search,
+      filters,
       account: computed(() => AppState.account),
       // recipes: computed(() => AppState.recipes),
       recipes: computed(() => {
@@ -79,8 +79,12 @@ export default {
       }
       ),
 
-      async changeRecipeType(recipeType) {
-        logger.log('this is the recipe type', recipeType);
+      changeFilterType(filter) {
+        recipesService.changeFilterType(filter)
+      },
+
+      changeRecipeType(recipeType) {
+        // logger.log('this is the recipe type', recipeType);
         filteredRecipeTypes.value = recipeType;
       },
     };
